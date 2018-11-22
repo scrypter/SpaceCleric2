@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{00039705-08D6-4FC9-D051-C5DEF9BEA382}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "SpaceCleric",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
