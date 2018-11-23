@@ -1,4 +1,4 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ public class SpaceClericEditorTarget : TargetRules
 	public SpaceClericEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		ExtraModuleNames.Add("SpaceCleric");
+
+		ExtraModuleNames.AddRange( new string[] { "SpaceCleric" } );
 	}
 }
