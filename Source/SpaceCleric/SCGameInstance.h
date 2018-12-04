@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "OnlineSessionInterface.h"
+
 #include "SCGameInstance.generated.h"
 
 /**
@@ -39,7 +41,7 @@ private:
 	uint32 iNumPublicConnections = 5;
 	uint32 iMaxSearchResults = 100;
 
-	void OnConnectionStatusChangedDelegates(const FString& ServiceName, EOnlineServerConnectionStatus::Type LastConnectionState, EOnlineServerConnectionStatus::Type ConnectionState);
+	void OnConnectionStatusChanged(const FString& ServiceName, EOnlineServerConnectionStatus::Type LastConnectionState, EOnlineServerConnectionStatus::Type ConnectionState);
 
 	IOnlineSessionPtr SessionInterface;
 
@@ -47,7 +49,7 @@ private:
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
 	void OnFindSessionscomplete(bool bWasSuccessful);
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
-	void OnDestroySessionCompleteDelegate(FName SessionName, bool bWasSuccessful);
+	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 
 	const FName DEFAULT_SESSION_NAME = TEXT("SpaceCleric Session");
 	FName SessionName = DEFAULT_SESSION_NAME;

@@ -6,7 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
-#include "OnlineSessionInterface"
+#include "OnlineSessionInterface.h"
 
 USCGameInstance::USCGameInstance(const FObjectInitializer & ObjectInitializer)
 { }
@@ -17,7 +17,7 @@ void USCGameInstance::Init()
     IOnlineSubsystem* SubSystem = IOnlineSubsystem::Get();
     if (SubSystem != nullptr)
     {
-        SubSystem->OnConnectionStatusChangedDelegates.AddUObject(this, &USCGameInstance::OnConnectionStatusChangedDelegates);
+        SubSystem->OnConnectionStatusChangedDelegates.AddUObject(this, &USCGameInstance::OnConnectionStatusChanged);
 
         if (*SubSystem->GetSubsystemName().ToString() == FString("NULL"))
         {
@@ -35,7 +35,7 @@ void USCGameInstance::Init()
         if (SessionInterface.IsValid())
         {
             SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &USCGameInstance::OnCreateSessionComplete);
-            SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &USCGameInstance::USCGameInstanceOnDestroySessionComplete);
+            SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &USCGameInstance::OnDestroySessionComplete);
             SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &USCGameInstance::OnFindSessionscomplete);
             SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &USCGameInstance::OnJoinSessionComplete);
         }
@@ -86,7 +86,7 @@ void USCGameInstance::GetSessions()
 	}
 }
 
-void USCGameInstance::OnConnectionStatusChangedDelegates(const FString & ServiceName, EOnlineServerConnectionStatus::Type LastConnectionState, EOnlineServerConnectionStatus::Type ConnectionState)
+void USCGameInstance::OnConnectionStatusChanged(const FString & ServiceName, EOnlineServerConnectionStatus::Type LastConnectionState, EOnlineServerConnectionStatus::Type ConnectionState)
 {
     // UE_LOG(LogTemp, Warning, TEXT("Service Name: %s"), *ServiceName);
 	// UE_LOG(LogTemp, Warning, TEXT("Last Connection State: %s"), LastConnectionState);
@@ -171,7 +171,7 @@ void USCGameInstance::OnJoinSessionComplete(FName fnSessionName, EOnJoinSessionC
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
 }
 
-void USCGameInstance::USCGameInstanceOnDestroySessionComplete(FName fnSessionName, bool bWasSuccessful)
+void USCGameInstance::OnDestroySessionComplete(FName fnSessionName, bool bWasSuccessful)
 {
     if (bWasSuccessful) {
 		UE_LOG(LogTemp, Warning, TEXT("Successfully destroyed session"));
