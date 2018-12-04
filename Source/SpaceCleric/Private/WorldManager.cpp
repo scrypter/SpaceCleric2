@@ -2,6 +2,8 @@
 
 
 #include "WorldManager.h"
+#include "../Public/TimeManager.h"
+#include "../Public/LightManager.h"
 
 
 // Sets default values
@@ -16,13 +18,13 @@ AWorldManager::AWorldManager()
 void AWorldManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	TimeManager = NewObject<UTimeManager>();
+	LightManager = NewObject<ULightManager>();
 }
 
-// Called every frame
 void AWorldManager::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-
+	TimeManager->Tick(DeltaTime);
+	LightManager->Update(TimeManager->GetHour());
 }
 

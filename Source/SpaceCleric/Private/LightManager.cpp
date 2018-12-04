@@ -2,33 +2,68 @@
 
 
 #include "LightManager.h"
-#include "Engine/DirectionalLight.h"
 #include "../Public/SkySphere.h"
 
+#include "EngineUtils.h"
+#include "Engine/DirectionalLight.h"
 #include "Kismet/KismetMathLibrary.h"
 
-
 // Sets default values
-ALightManager::ALightManager()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+ULightManager::ULightManager()
+{}
 
+// Set the Sun and SkyDome to actors in the level if they exist
+// Sun looks for an ADirectionalLight with name Sun
+// SkyDome looks for an ASkySphere with name Sky
+void ULightManager::BeginPlay()
+{
+    // Need to move this to something that occurs after OnBeginPlay
+    // Scan for ADirectionalLight named "Sun"
+    for (TActorIterator<ADirectionalLight> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+    {
+        if(ActorItr->GetName() == "Sun")
+        {
+            Sun = *ActorItr;
+        }
+    }
+
+    // If "Sun" not found, log it
+    if(!IsValid(Sun))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("LightManager could not find ADirectionalLight called Sun"));
+    }
+
+
+    // Scan for ASkySphere
+    for (TActorIterator<ASkySphere> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+    {
+        if(ActorItr->GetName() == "Sky")
+        {
+            SkyDome = *ActorItr;
+        }
+    }
+
+    // If ASkySphere not found, log it
+    if(!IsValid(SkyDome))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("LightManager could not find ASkySphere called Sky"));
+    }
 }
 
-// Called when the game starts or when spawned
-void ALightManager::BeginPlay()
+// Update the sun values
+UFUNCTION( Client, unreliable)
+void ULightManager::UpdateSun(float Hour)
 {
-	Super::BeginPlay();
-	
+    SunAngle = Hour / 6.0f * 90.0f + 90.0f;
+    if(IsValid(Sun) && IsValid(SkyDome))
+    {
+        Sun->SetActorRotation(UKismetMathLibrary::MakeRotator(0.0f, SunAngle, 0.0f));
+	    SkyDome->UpdateSunDirection();
+    }
 }
 
 // Update the lights based on time of day
-void ALightManager::Update(float Hour)
+void ULightManager::Update(float Hour)
 {
-	SunAngle = Hour / 6.0f * 90.0f + 90.0f;
-	
-	Sun->SetActorRotation(UKismetMathLibrary::MakeRotator(0.0f, SunAngle, 0.0f));
-
-	SkyDome->UpdateSunDirection();
+    UpdateSun(Hour);
 }

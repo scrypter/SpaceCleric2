@@ -2,58 +2,37 @@
 
 
 #include "TimeManager.h"
-#include "LightManager.h"
 
-
-// Sets default values
-ATimeManager::ATimeManager()
+UTimeManager::UTimeManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    // Set one day to day length in hours
+    OneDay = DayLengthInMinutes * 60.0f;
 
+    // The amount of real time in a game hour
+    OneHour = OneDay / 24.0f;
 }
 
-// Called when the game starts or when spawned
-void ATimeManager::BeginPlay()
+UFUNCTION(Server, WithValidation, Reliable)
+void UTimeManager::Tick(float DeltaTime)
 {
-	Super::BeginPlay();
-	
-	// Set one day to day length in hours
-	OneDay = DayLengthInMinutes * 60;
-
-	// The amount of real time in an hour
-	OneHour = OneDay / 24.0;
-
+    Hour += (DeltaTime / OneHour);
+    if(Hour > 24.0f)
+    {
+        Hour -= 24.0f;
+    }
 }
 
-// Called every frame
-void ATimeManager::Tick(float DeltaTime)
+void UTimeManager::SetDayLengthInMinutes(float DayLengthInMinutesParam)
 {
-	Super::Tick(DeltaTime);
-	Hour += (DeltaTime / OneHour);
-	if(Hour > 24.0f)
-	{
-		Hour -= 24.0f;
-	}
-	LightManager->Update(Hour);
+    DayLengthInMinutes = DayLengthInMinutesParam;
 }
 
-void ATimeManager::SetDayLengthInMinutes(float DayLengthInMinutesParam)
+float UTimeManager::GetDayLengthInMinutes()
 {
-	DayLengthInMinutes = DayLengthInMinutesParam;
+    return DayLengthInMinutes;
 }
 
-void ATimeManager::SetHour(float HourParam)
+float UTimeManager::GetHour()
 {
-	Hour = HourParam;
-}
-
-float ATimeManager::GetDayLengthInMinutes()
-{
-	return DayLengthInMinutes;
-}
-
-float ATimeManager::GetHour()
-{
-	return Hour;
+    return Hour;
 }

@@ -3,33 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "LightManager.h"
-
+#include "UObject/NoExportTypes.h"
 #include "TimeManager.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class SPACECLERIC_API ATimeManager : public AActor
+class SPACECLERIC_API UTimeManager : public UObject
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	ATimeManager();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+public:
+	// Sets default values for this object's propertiese
+	UTimeManager();
 
 private:
-	UPROPERTY(category="Time", EditAnywhere)
+	UPROPERTY(category="Time", VisibleAnywhere)
 	float Hour;
 
 	UPROPERTY(category="Time", EditAnywhere)
 	float DayLengthInMinutes;
-
-	UPROPERTY(category="Time", EditAnywhere)
-	ALightManager* LightManager;
 
 	UPROPERTY(category="Time", VisibleInstanceOnly)
 	float OneDay;
@@ -37,16 +31,13 @@ private:
 	UPROPERTY(category="Time", VisibleInstanceOnly)
 	float OneHour;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+public:
+	// Update the game time
+	void Tick(float DeltaTime);
 
 	/** SETTERS */
 	UFUNCTION(Category="Time", BlueprintCallable)
 	void SetDayLengthInMinutes(float DayLengthInMinutesParam);
-
-	UFUNCTION(Category="Time", BlueprintCallable)
-	void SetHour(float HourParam);
 	
 	/** GETTERS */
 	UFUNCTION(Category="Time", BlueprintCallable)
@@ -54,7 +45,4 @@ public:
 
 	UFUNCTION(Category="Time", BlueprintCallable)
 	float GetHour();
-
-	
-	
 };
