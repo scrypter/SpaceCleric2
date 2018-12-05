@@ -3,36 +3,24 @@
 
 #include "TimeManager.h"
 
-UTimeManager::UTimeManager()
-{
-    // Set one day to day length in hours
-    OneDay = DayLengthInMinutes * 60.0f;
-
-    // The amount of real time in a game hour
-    OneHour = OneDay / 24.0f;
-}
-
-UFUNCTION(Server, WithValidation, Reliable)
-void UTimeManager::Tick(float DeltaTime)
-{
-    Hour += (DeltaTime / OneHour);
-    if(Hour > 24.0f)
-    {
-        Hour -= 24.0f;
-    }
-}
-
-void UTimeManager::SetDayLengthInMinutes(float DayLengthInMinutesParam)
-{
-    DayLengthInMinutes = DayLengthInMinutesParam;
-}
-
-float UTimeManager::GetDayLengthInMinutes()
-{
-    return DayLengthInMinutes;
-}
-
 float UTimeManager::GetHour()
 {
     return Hour;
 }
+
+void UTimeManager::Update(float DeltaTime)
+{
+    Hour += DeltaTime / OneHourInRealSeconds;
+    if(Hour > 24.0)
+    {
+        Hour -= 24.0;
+    }
+}
+
+void UTimeManager::SetDayLengthInRealMinutes(float DayLengthParam)
+{
+    DayLengthInRealMinutes = DayLengthParam;
+    OneGameDayInGameHours = DayLengthInRealMinutes * 60.0;
+    OneHourInRealSeconds = OneGameDayInGameHours / 24.0;
+}
+

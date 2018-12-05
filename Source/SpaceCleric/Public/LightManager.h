@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+
+
 #include "LightManager.generated.h"
 
 /**
@@ -14,27 +16,21 @@ class SPACECLERIC_API ULightManager : public UObject
 {
 	GENERATED_BODY()
 
-public:
-	// Sets default values for this object's properties
-	ULightManager();
+	UFUNCTION(BlueprintCallable)
+	void Update(float HourParam);
 
-	// When the 
-	UFUNCTION(category="Event", BlueprintCallable)
-	void BeginPlay();
-
-private:
-	UPROPERTY(category="Sun", VisibleAnywhere)
-	float SunAngle;
-
-	UPROPERTY(category="Sun", VisibleAnywhere)
+	UPROPERTY(Category="Sun", EditAnywhere)
 	class ADirectionalLight* Sun;
 
-	UPROPERTY(category="Sun", VisibleAnywhere)
-	class ASkySphere* SkyDome;
-
-	void UpdateSun(float Hour);
+protected:
+	UPROPERTY(Category="Sun", VisibleAnywhere, BlueprintReadOnly)
+	float SunAngle;
 
 public:
-	// Update the lights based on time of day
-	void Update(float Hour);	
+	UFUNCTION(Category="Sun", BlueprintCallable)
+	void SetSun(ADirectionalLight* SunParam);
+
+	UFUNCTION(Category="Sun", BlueprintCallable)
+	ADirectionalLight* GetSun();
+	
 };

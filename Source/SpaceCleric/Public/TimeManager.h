@@ -14,35 +14,23 @@ class SPACECLERIC_API UTimeManager : public UObject
 {
 	GENERATED_BODY()
 	
-public:
-	// Sets default values for this object's propertiese
-	UTimeManager();
-
-private:
-	UPROPERTY(category="Time", VisibleAnywhere)
+	UPROPERTY(Category="Time", VisibleAnywhere)
 	float Hour;
 
-	UPROPERTY(category="Time", EditAnywhere)
-	float DayLengthInMinutes;
+	UPROPERTY(Category="Time", EditAnywhere)
+	float DayLengthInRealMinutes;
 
-	UPROPERTY(category="Time", VisibleInstanceOnly)
-	float OneDay;
-
-	UPROPERTY(category="Time", VisibleInstanceOnly)
-	float OneHour;
+private:
+	float OneGameDayInGameHours;
+	float OneHourInRealSeconds;	
 
 public:
-	// Update the game time
-	void Tick(float DeltaTime);
-
-	/** SETTERS */
-	UFUNCTION(Category="Time", BlueprintCallable)
-	void SetDayLengthInMinutes(float DayLengthInMinutesParam);
-	
-	/** GETTERS */
-	UFUNCTION(Category="Time", BlueprintCallable)
-	float GetDayLengthInMinutes();
-
 	UFUNCTION(Category="Time", BlueprintCallable)
 	float GetHour();
+
+	UFUNCTION(Category="Time", BlueprintCallable)
+	void Update(float DeltaTime);
+
+	UFUNCTION(Category="Time", BlueprintCallable)
+	void SetDayLengthInRealMinutes(float DayLengthParam);
 };

@@ -2,8 +2,6 @@
 
 
 #include "WorldManager.h"
-#include "../Public/TimeManager.h"
-#include "../Public/LightManager.h"
 
 
 // Sets default values
@@ -11,20 +9,26 @@ AWorldManager::AWorldManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void AWorldManager::BeginPlay()
 {
 	Super::BeginPlay();
-	TimeManager = NewObject<UTimeManager>();
-	LightManager = NewObject<ULightManager>();
+	
 }
 
+void AWorldManager::Init()
+{
+	LightManager = NewObject<ULightManager>();
+	TimeManager = NewObject<UTimeManager>();
+	TimeManager->SetDayLengthInRealMinutes(GameHourInRealMinutes);
+	CalendarManager = NewObject<UCalendarManager>();
+}
+
+// Called every frame
 void AWorldManager::Tick(float DeltaTime)
 {
-	TimeManager->Tick(DeltaTime);
-	LightManager->Update(TimeManager->GetHour());
-}
+	Super::Tick(DeltaTime);
 
+}
