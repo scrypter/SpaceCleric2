@@ -124,7 +124,7 @@ void USCGameInstance::OnCreateSessionComplete(FName fnSessionName, bool bWasSucc
 		UWorld* World = GetWorld();
 		if (!ensure(World != nullptr)) return;
 		bIsTraveling = true;
-		World->ServerTravel("/Game/Maps/Main?listen");
+		World->ServerTravel("/Game/Maps/Lobby?listen");
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Failed to create session "));
