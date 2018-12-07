@@ -11,10 +11,10 @@ float UTimeManager::GetHour()
 void UTimeManager::Update(float DeltaTime)
 {
     Hour += DeltaTime / OneHourInRealSeconds;
-    if(Hour > 24.0)
-    {
-        Hour -= 24.0;
-    }
+    // if(Hour > 24.0)
+    // {
+    //     Hour -= 24.0;
+    // }
 }
 
 void UTimeManager::SetDayLengthInRealMinutes(float DayLengthParam)

@@ -28,7 +28,7 @@ public:
 	UFUNCTION(Category="Time", BlueprintCallable)
 	float GetHour();
 
-	UFUNCTION(Category="Time", BlueprintCallable)
+	UFUNCTION(Category="Time", BlueprintCallable) // Should run on server
 	void Update(float DeltaTime);
 
 	UFUNCTION(Category="Time", BlueprintCallable)

@@ -8,6 +8,8 @@
 
 void ULightManager::Update(float HourParam)
 {
+    // Calculate change percentage 360/24 * HourParam
+
     SunAngle = HourParam / 6.0 * 90.0 + 90.0;
     FRotator SunRotator = UKismetMathLibrary::MakeRotator(0.0, SunAngle, 0.0);
     Sun->SetActorRotation(SunRotator);
